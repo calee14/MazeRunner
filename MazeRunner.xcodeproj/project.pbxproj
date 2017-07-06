@@ -15,6 +15,13 @@
 		B319D4491F0C4CF6005881BC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B319D4471F0C4CF6005881BC /* Main.storyboard */; };
 		B319D44B1F0C4CF6005881BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B319D44A1F0C4CF6005881BC /* Assets.xcassets */; };
 		B319D44E1F0C4CF6005881BC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B319D44C1F0C4CF6005881BC /* LaunchScreen.storyboard */; };
+		B319D4561F0D49C5005881BC /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B319D4551F0D49C5005881BC /* CGFloat+Extensions.swift */; };
+		B319D45E1F0D616C005881BC /* Bouncers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B319D45D1F0D616C005881BC /* Bouncers.swift */; };
+		B319D4601F0EA81E005881BC /* Tutorial.sks in Resources */ = {isa = PBXBuildFile; fileRef = B319D45F1F0EA81E005881BC /* Tutorial.sks */; };
+		B319D4621F0EA960005881BC /* Wall.sks in Resources */ = {isa = PBXBuildFile; fileRef = B319D4611F0EA960005881BC /* Wall.sks */; };
+		B3205F511F0EB77300EF3660 /* Runner.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3205F501F0EB77300EF3660 /* Runner.swift */; };
+		B3DF59841F0ECBC000D8880C /* Tutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DF59831F0ECBC000D8880C /* Tutorial.swift */; };
+		B3DF59881F0EEBA000D8880C /* Celebration.sks in Resources */ = {isa = PBXBuildFile; fileRef = B3DF59871F0EEBA000D8880C /* Celebration.sks */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +35,13 @@
 		B319D44A1F0C4CF6005881BC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B319D44D1F0C4CF6005881BC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B319D44F1F0C4CF6005881BC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B319D4551F0D49C5005881BC /* CGFloat+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extensions.swift"; sourceTree = "<group>"; };
+		B319D45D1F0D616C005881BC /* Bouncers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bouncers.swift; sourceTree = "<group>"; };
+		B319D45F1F0EA81E005881BC /* Tutorial.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Tutorial.sks; sourceTree = "<group>"; };
+		B319D4611F0EA960005881BC /* Wall.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Wall.sks; sourceTree = "<group>"; };
+		B3205F501F0EB77300EF3660 /* Runner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Runner.swift; sourceTree = "<group>"; };
+		B3DF59831F0ECBC000D8880C /* Tutorial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tutorial.swift; sourceTree = "<group>"; };
+		B3DF59871F0EEBA000D8880C /* Celebration.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Celebration.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,12 +77,19 @@
 				B319D43D1F0C4CF6005881BC /* AppDelegate.swift */,
 				B319D43F1F0C4CF6005881BC /* GameScene.sks */,
 				B319D4411F0C4CF6005881BC /* Actions.sks */,
+				B319D45F1F0EA81E005881BC /* Tutorial.sks */,
+				B319D4611F0EA960005881BC /* Wall.sks */,
 				B319D4431F0C4CF6005881BC /* GameScene.swift */,
+				B3DF59831F0ECBC000D8880C /* Tutorial.swift */,
+				B319D45D1F0D616C005881BC /* Bouncers.swift */,
+				B3205F501F0EB77300EF3660 /* Runner.swift */,
 				B319D4451F0C4CF6005881BC /* GameViewController.swift */,
+				B319D4551F0D49C5005881BC /* CGFloat+Extensions.swift */,
 				B319D4471F0C4CF6005881BC /* Main.storyboard */,
 				B319D44A1F0C4CF6005881BC /* Assets.xcassets */,
 				B319D44C1F0C4CF6005881BC /* LaunchScreen.storyboard */,
 				B319D44F1F0C4CF6005881BC /* Info.plist */,
+				B3DF59871F0EEBA000D8880C /* Celebration.sks */,
 			);
 			path = MazeRunner;
 			sourceTree = "<group>";
@@ -136,8 +157,11 @@
 				B319D4491F0C4CF6005881BC /* Main.storyboard in Resources */,
 				B319D4401F0C4CF6005881BC /* GameScene.sks in Resources */,
 				B319D44B1F0C4CF6005881BC /* Assets.xcassets in Resources */,
+				B319D4601F0EA81E005881BC /* Tutorial.sks in Resources */,
 				B319D44E1F0C4CF6005881BC /* LaunchScreen.storyboard in Resources */,
 				B319D4421F0C4CF6005881BC /* Actions.sks in Resources */,
+				B319D4621F0EA960005881BC /* Wall.sks in Resources */,
+				B3DF59881F0EEBA000D8880C /* Celebration.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,7 +173,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				B319D4441F0C4CF6005881BC /* GameScene.swift in Sources */,
+				B319D45E1F0D616C005881BC /* Bouncers.swift in Sources */,
 				B319D4461F0C4CF6005881BC /* GameViewController.swift in Sources */,
+				B3205F511F0EB77300EF3660 /* Runner.swift in Sources */,
+				B319D4561F0D49C5005881BC /* CGFloat+Extensions.swift in Sources */,
+				B3DF59841F0ECBC000D8880C /* Tutorial.swift in Sources */,
 				B319D43E1F0C4CF6005881BC /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -316,6 +344,7 @@
 				B319D4541F0C4CF6005881BC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
