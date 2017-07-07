@@ -26,9 +26,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var spd: CGFloat = 4
     var startPoint: CGPoint!
     var trackingTimer: Bool = false
+    var timer: Float!
     var timerLabel: SKLabelNode!
     var gameState: GameState = .still
     var startTime = TimeInterval()
+    var fastestTime: Float!
+    var pointer: SKSpriteNode!
+    var exit: SKSpriteNode!
     
     //Bouncers
     var bouncer: [Bouncer] = []
@@ -80,6 +84,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         cameraTarget = runner
         //Connect the label nodes
         timerLabel = self.childNode(withName: "//timerLabel") as! SKLabelNode
+        //Pointer 
+        pointer = self.childNode(withName: "//pointer") as! SKSpriteNode
+        //Get the exit so we can use the position
+        exit = self.childNode(withName: "exit") as! SKSpriteNode
+        
+        //Defaults
+        let timerDefault = UserDefaults.standard
+        
+        if timerDefault.float(forKey: "highscore") != 0 {
+            fastestTime = timerDefault.float(forKey: "highscore")
+        } else {
+            fastestTime = 0.0
+        }
+        print(fastestTime)
+        print(timer)
         
         //Connect bouncers
         bouncer1 = self.childNode(withName: "bouncer1") as! Bouncer
@@ -115,6 +134,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
         moveCamera()
+        movePointer()
         
         //Check direction
         runner.checkDirection()
@@ -199,6 +219,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(celebration2!)
         addChild(celebration3!)
         addChild(celebration4!)
+        
+        //Check if the time is faster than the best
+        if timer > fastestTime {
+            let timerDefault = UserDefaults.standard
+            timerDefault.set(timer, forKey: "highscore")
+        }
+        //change the game scene to exit 
+        gameState = .exit
+        
+        //highscoreLabel.text = String("Highscore: \(fastestTime)")
+        print(fastestTime)
     }
     
     func moveCamera() {
@@ -213,6 +244,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         cameraNode.position.y = y
     }
     
+    func movePointer() {
+        guard let pointerTarget = cameraTarget else {
+            return
+        }
+        let targetX = pointerTarget.position.x
+        let x = clamp(value: targetX, lower: 0, upper: 1300)
+        pointer.position.x = x
+        let targetY = pointerTarget.position.y
+        let y = clamp(value: targetY, lower: 0, upper: 1300)
+        pointer.position.y = y
+        
+        if gameState != .exit {
+            pointer.rotateVersus(destPoint: exit.position)
+        } else {
+            pointer.removeFromParent()
+        }
+    }
+
     func swiped(_ gesture: UIGestureRecognizer) {
         
         if let swipeGesture = gesture as? UISwipeGestureRecognizer {
@@ -251,7 +300,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func calculateTime() {
+        //Get the elasped time passed
+        var elaspedTime: TimeInterval = TimeInterval(timer)
         
+        //Get the hours
+        let hours = UInt8(elaspedTime / 3600)
+        
+        //Get the minutes 
+        let minutes = UInt8(elaspedTime / 60.0)
+        elaspedTime -= (TimeInterval(minutes) * 60)
+        //Get the seconds
+        let seconds = UInt8(elaspedTime)
+        elaspedTime -= TimeInterval(seconds)
+        
+        //Find the fraction of the second
+        let fraction = UInt8(elaspedTime * 100)
+        
+        //add the leading zero for minutes, seconds and millseconds and store them as string constants
+        
+        let strHours = String(format: "%02d", hours)
+        let strMinutes = String(format: "%02d", minutes)
+        let strSeconds = String(format: "%02d", seconds)
+        let strFraction = String(format: "%02d", fraction)
+        
+        let time = ("\(strHours):\(strMinutes):\(strSeconds):\(strFraction)")
     }
     
     func updateTime() {
@@ -262,7 +334,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         var elapsedTime: TimeInterval = currentTime - startTime
         
-        print(elapsedTime)
         //calculate the hours in elasped time
         let hours = UInt8(elapsedTime / 3600)
         
@@ -293,6 +364,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         let time = ("\(strHours):\(strMinutes):\(strSeconds):\(strFraction)")
         timerLabel.text = time
+        timer = Float(fraction)
+        print(timer)
         
     }
 }

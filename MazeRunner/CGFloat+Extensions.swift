@@ -21,6 +21,7 @@
  */
 
 import CoreGraphics
+import SpriteKit
 
 /** The value of π as a CGFloat */
 let π = CGFloat(Double.pi)
@@ -101,4 +102,21 @@ public func shortestAngleBetween(angle1: CGFloat, angle2: CGFloat) -> CGFloat {
         angle = angle + twoπ
     }
     return angle
+}
+
+/**
+ * Extention of the SKNode
+ */
+public extension SKNode {
+    
+/**
+ * Returns the angle that makes the SKSpriteNode face the destination point.
+ */
+public func rotateVersus(destPoint: CGPoint) {
+    let v1 = CGVector(dx:0, dy:1)
+    let v2 = CGVector(dx:destPoint.x - position.x, dy: destPoint.y - position.y)
+    let angle = atan2(v2.dy, v2.dx) - atan2(v1.dy, v1.dx)
+    zRotation = angle
+}
+    
 }
