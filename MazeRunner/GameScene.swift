@@ -30,7 +30,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var timerLabel: SKLabelNode!
     var gameState: GameState = .still
     var startTime = TimeInterval()
-    var fastestTime: Float!
     var pointer: SKSpriteNode!
     var exit: SKSpriteNode!
     
@@ -68,9 +67,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //Gets the starting time for the timer
         trackingTimer = false
         gameState = .firstSwipe
+        
         //Creates a border the size of the frame
         let border = SKPhysicsBody(edgeLoopFrom: self.frame)
         border.friction = 0
+        
         //self.physicsBody = border
         
         physicsWorld.contactDelegate = self
@@ -78,27 +79,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //Connect spaceShip recursive search\
         runner = childNode(withName: "runner") as! Runner
         startPoint = runner.position
+        
         //Connect the camera node
         cameraNode = self.childNode(withName: "cameraNode") as! SKCameraNode
         self.camera = cameraNode
         cameraTarget = runner
+        
         //Connect the label nodes
         timerLabel = self.childNode(withName: "//timerLabel") as! SKLabelNode
+        
         //Pointer 
         pointer = self.childNode(withName: "//pointer") as! SKSpriteNode
+        
         //Get the exit so we can use the position
         exit = self.childNode(withName: "exit") as! SKSpriteNode
-        
-        //Defaults
-        let timerDefault = UserDefaults.standard
-        
-        if timerDefault.float(forKey: "highscore") != 0 {
-            fastestTime = timerDefault.float(forKey: "highscore")
-        } else {
-            fastestTime = 0.0
-        }
-        print(fastestTime)
-        print(timer)
         
         //Connect bouncers
         bouncer1 = self.childNode(withName: "bouncer1") as! Bouncer
@@ -150,6 +144,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
+        //Get the colliding nodes
         let contactA = contact.bodyA
         let contactB = contact.bodyB
         
@@ -171,21 +166,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Check if player is colliding with the wall
         if nodeA?.physicsBody?.contactTestBitMask == 1 && nodeB?.physicsBody?.contactTestBitMask == 0 {
-            //dir = .still
+            //spd = 3
         } else if nodeA?.physicsBody?.contactTestBitMask == 0 && nodeB?.physicsBody?.contactTestBitMask == 1 {
-            //dir = .still
+            //spd = 3
         }
         
         //Check if player is colliding with the bouncer
         if nodeA?.physicsBody?.contactTestBitMask == 2 && nodeB?.physicsBody?.contactTestBitMask == 1 {
-            print("collided")
             let movePosition = SKAction.run({
                 self.runner.position = self.startPoint
                 self.runner.dir = .still
             })
             self.run(movePosition)
         } else if nodeA?.physicsBody?.contactTestBitMask == 1 && nodeB?.physicsBody?.contactTestBitMask == 2 {
-            print("collided")
             let movePosition = SKAction.run({
                 self.runner.position = self.startPoint
                 self.runner.dir = .still
@@ -195,11 +188,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Check if player has collided with the exit
         if nodeA?.physicsBody?.contactTestBitMask == 1 && nodeB?.physicsBody?.contactTestBitMask == 4 {
-            print("we made it ")
             trackingTimer = false
             celebrate()
         } else if nodeA?.physicsBody?.contactTestBitMask == 4 && nodeB?.physicsBody?.contactTestBitMask == 1 {
-            print("we made it")
             trackingTimer = false
             celebrate()
         }
@@ -220,22 +211,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(celebration3!)
         addChild(celebration4!)
         
-        //Check if the time is faster than the best
-        if timer > fastestTime {
-            let timerDefault = UserDefaults.standard
-            timerDefault.set(timer, forKey: "highscore")
-        }
-        //change the game scene to exit 
+        //change the game scene to exit
         gameState = .exit
         
         //highscoreLabel.text = String("Highscore: \(fastestTime)")
-        print(fastestTime)
     }
     
     func moveCamera() {
+        //moves the camera to follow the player
         guard let cameraTarget = cameraTarget else {
             return
         }
+        //Clamping the x and y values
         let targetX = cameraTarget.position.x
         let x = clamp(value: targetX, lower: 0, upper: 1300)
         cameraNode.position.x = x
@@ -245,9 +232,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func movePointer() {
+        //Same as the camera func follow the player
         guard let pointerTarget = cameraTarget else {
             return
         }
+        //Clamping the x and y values
         let targetX = pointerTarget.position.x
         let x = clamp(value: targetX, lower: 0, upper: 1300)
         pointer.position.x = x
@@ -255,9 +244,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let y = clamp(value: targetY, lower: 0, upper: 1300)
         pointer.position.y = y
         
+        //If the game is still player make a pointer face the exit
         if gameState != .exit {
             pointer.rotateVersus(destPoint: exit.position)
         } else {
+            //remove the pointer if the game is over
             pointer.removeFromParent()
         }
     }
@@ -265,21 +256,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func swiped(_ gesture: UIGestureRecognizer) {
         
         if let swipeGesture = gesture as? UISwipeGestureRecognizer {
-            
+            //Does the swipe check
             checkFirstSwipe()
             //Switch function if the player swiped up, down, left, right
             switch swipeGesture.direction {
             case UISwipeGestureRecognizerDirection.right:
-                print("Swiped right")
                 runner.dir = .right
             case UISwipeGestureRecognizerDirection.down:
-                print("Swiped down")
                 runner.dir = .down
             case UISwipeGestureRecognizerDirection.left:
-                print("Swiped left")
                 runner.dir = .left
             case UISwipeGestureRecognizerDirection.up:
-                print("Swiped up")
                 runner.dir = .up
             default:
                 break
@@ -288,6 +275,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func checkFirstSwipe() {
+        //Check if the swipe is the first swipe
         if gameState == .firstSwipe {
             if trackingTimer != true {
                 trackingTimer = true
@@ -297,33 +285,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 return
             }
         }
-    }
-    
-    func calculateTime() {
-        //Get the elasped time passed
-        var elaspedTime: TimeInterval = TimeInterval(timer)
-        
-        //Get the hours
-        let hours = UInt8(elaspedTime / 3600)
-        
-        //Get the minutes 
-        let minutes = UInt8(elaspedTime / 60.0)
-        elaspedTime -= (TimeInterval(minutes) * 60)
-        //Get the seconds
-        let seconds = UInt8(elaspedTime)
-        elaspedTime -= TimeInterval(seconds)
-        
-        //Find the fraction of the second
-        let fraction = UInt8(elaspedTime * 100)
-        
-        //add the leading zero for minutes, seconds and millseconds and store them as string constants
-        
-        let strHours = String(format: "%02d", hours)
-        let strMinutes = String(format: "%02d", minutes)
-        let strSeconds = String(format: "%02d", seconds)
-        let strFraction = String(format: "%02d", fraction)
-        
-        let time = ("\(strHours):\(strMinutes):\(strSeconds):\(strFraction)")
     }
     
     func updateTime() {
@@ -364,8 +325,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         let time = ("\(strHours):\(strMinutes):\(strSeconds):\(strFraction)")
         timerLabel.text = time
-        timer = Float(fraction)
-        print(timer)
         
     }
 }
