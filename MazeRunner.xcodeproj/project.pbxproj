@@ -108,12 +108,12 @@
 		B319D43C1F0C4CF6005881BC /* MazeRunner */ = {
 			isa = PBXGroup;
 			children = (
+				B34FED0B1F100AD500AF83A0 /* TheMaze.sks */,
 				B38D172B1F102195009A441D /* CoreMaze */,
 				B34FED0D1F100BC400AF83A0 /* MazeSides */,
 				B34FED081F10035900AF83A0 /* MazeBlocks */,
 				B319D43D1F0C4CF6005881BC /* AppDelegate.swift */,
 				B319D43F1F0C4CF6005881BC /* GameScene.sks */,
-				B34FED0B1F100AD500AF83A0 /* TheMaze.sks */,
 				B319D4411F0C4CF6005881BC /* Actions.sks */,
 				B319D4611F0EA960005881BC /* Wall.sks */,
 				B319D4431F0C4CF6005881BC /* GameScene.swift */,

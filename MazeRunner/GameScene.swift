@@ -214,6 +214,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //change the game scene to exit
         gameState = .exit
         
+        let wait = SKAction.wait(forDuration: 10)
+        let restart = SKAction.run {
+            self.loadGame()
+        }
+        let sequence = SKAction.sequence([wait, restart])
+        run(sequence)
         //highscoreLabel.text = String("Highscore: \(fastestTime)")
     }
     
@@ -325,6 +331,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         let time = ("\(strHours):\(strMinutes):\(strSeconds):\(strFraction)")
         timerLabel.text = time
+        
+    }
+    
+    func loadGame() {
+        //Grab reference to our sprite kit view
+        
+        //1) grab reference to our spriteKit view
+        guard let skView = self.view as SKView! else {
+            print("could not get SKView")
+            return
+        }
+        //2) Load game scene
+        guard let scene = GameScene(fileNamed: "GameScene") else {
+            print("Could not make GameScene, check the name is spelled correctly")
+            return
+        }
+        //Enusre the aspect mode is correct
+        scene.scaleMode = .aspectFit
+        //Show Debug
+        skView.showsPhysics = true
+        skView.showsDrawCount = true
+        skView.showsFPS = true
+        
+        //4)
+        skView.presentScene(scene)
         
     }
 }
